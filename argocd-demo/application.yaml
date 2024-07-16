@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: aritra-argocd-demo-project
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=true
+    argocd-image-updater.argoproj.io/image-alias.force-update: 'true'
+    argocd-image-updater.argoproj.io/image-alias.update-strategy: latest
+spec:
+  project: aritra-argocd-demo-project
+
+  source:
+    repoURL: git@github.com:myorg/aritra-argocd-demo-project.git  # Update this line
+    targetRevision: HEAD
+    path: argocd-demo  # Update this line to the path where your deployment.yaml is located
+
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: argocd-demo
+
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+
+    automated:
+      prune: true
+      selfHeal: true

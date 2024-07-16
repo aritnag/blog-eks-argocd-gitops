@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aritra-argocd-demo-project
+  namespace: argocd-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: aritra-argocd-demo-project
+  template:
+    metadata:
+      labels:
+        app: aritra-argocd-demo-project
+    spec:
+      containers:
+      - name: aritra-argocd-demo-project
+        image: 1234567890.dkr.ecr.eu-west-1.amazonaws.com/aritra-argocd-demo-project:749a700972e82c487e3ac1fe90cd8da4a2416231
+
+        ports:
+        - containerPort: 5000
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "512Mi"
+          requests:
+            cpu: "0.1"
+            memory: "128Mi"
+        env:
+          - name: DYNAMODB_TABLE_NAME
+            value: "aritra-argocd-demo-project"
